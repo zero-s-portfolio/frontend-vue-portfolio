@@ -1,20 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import { Menu, X, Gamepad2 } from 'lucide-vue-next'
+import { Menu, X } from 'lucide-vue-next'
 import Logo from '@/assets/images/logo.png'
+import { navMenu } from '@/constants/data'
 
 const isOpen = ref(false)
 const totalPoints = ref(0)
 
-const links = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/skills', label: 'Skills' },
-  { href: '/games', label: 'Games' },
-  { href: '/contact', label: 'Contact' },
-]
 </script>
 
 <template>
@@ -30,21 +23,14 @@ const links = [
         </RouterLink>
 
         <div class="hidden md:flex items-center gap-8">
-          <RouterLink
-            v-for="link in links"
+          <a
+            v-for="link in navMenu"
             :key="link.href"
-            :to="link.href"
+            :href="link.href"
             class="text-slate-300 hover:text-cyan-400 transition-colors text-sm font-medium"
           >
             {{ link.label }}
-          </RouterLink>
-        </div>
-
-        <div class="hidden md:flex items-center gap-4">
-          <div class="flex items-center gap-2 px-3 py-2 bg-slate-900 rounded-lg">
-            <Gamepad2 class="w-4 h-4 text-cyan-400" />
-            <span class="text-sm font-semibold text-cyan-400">{{ totalPoints }}</span>
-          </div>
+          </a>
         </div>
 
         <button
@@ -59,7 +45,7 @@ const links = [
       <Transition name="mobile-menu">
         <div v-if="isOpen" class="md:hidden mt-4 space-y-2 overflow-hidden">
           <RouterLink
-            v-for="link in links"
+            v-for="link in navMenu"
             :key="link.href"
             :to="link.href"
             class="block px-4 py-2 rounded-lg text-slate-300 hover:text-cyan-400 hover:bg-slate-800 transition-colors"
@@ -67,11 +53,6 @@ const links = [
           >
             {{ link.label }}
           </RouterLink>
-
-          <div class="flex items-center gap-2 px-4 py-2 text-cyan-400">
-            <Gamepad2 class="w-4 h-4" />
-            <span class="text-sm font-semibold">Points: {{ totalPoints }}</span>
-          </div>
         </div>
       </Transition>
     </div>

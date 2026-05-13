@@ -1,16 +1,13 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import {
-  ArrowRight,
-  Code2,
-  Sparkles,
-  Gamepad2,
-  QrCode,
-  Eye,
-} from 'lucide-vue-next'
+import { ArrowRight } from 'lucide-vue-next'
 import HeroScene from '@/components/HeroScene.vue'
 import HeroPlanet from '@/components/HeroPlanet.vue'
-import { PORTFOLIO_DATA } from '../../lib/data'
+import AboutSection from '@/components/AboutSection.vue'
+import WorkSection from '@/components/WorkSection.vue'
+import ProjectSection from '@/components/ProjectSection.vue'
+import ContactSection from '@/components/ContactSection.vue'
+import MiniGameSection from '@/components/MiniGameSection.vue'
 import { onMounted, onUnmounted, ref, computed } from 'vue'
 
 const scrollY = ref(0)
@@ -45,6 +42,7 @@ const contentStyle = computed(() => ({
 
   <section
     class="relative w-full h-screen bg-linear-to-b from-slate-950 via-slate-900 to-slate-950 overflow-hidden"
+    id="hero"
   >
     <!-- background cepat -->
     <div
@@ -73,15 +71,15 @@ const contentStyle = computed(() => ({
         <h1
           class="text-5xl sm:text-7xl font-bold mb-6 bg-linear-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent"
         >
-          {{ PORTFOLIO_DATA.hero.name }}
+          Zero Sensei
         </h1>
 
         <p class="text-xl sm:text-2xl text-slate-300 mb-4">
-          {{ PORTFOLIO_DATA.hero.title }}
+          Full-Stack & Robotic Developer | Tech Creator
         </p>
 
         <p class="text-base sm:text-lg text-slate-400 mb-8 max-w-2xl mx-auto">
-          {{ PORTFOLIO_DATA.hero.subtitle }}
+          Crafting immersive digital experiences, intelligent systems, and futuristic technology that bridges creativity with innovation.
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 items-center xl:justify-start justify-center">
@@ -89,7 +87,7 @@ const contentStyle = computed(() => ({
             to="/portfolio"
             class="group inline-flex items-center gap-2 px-8 py-3 bg-linear-to-r from-cyan-500 to-blue-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all"
           >
-            {{ PORTFOLIO_DATA.hero.cta }}
+            Explore My World
             <ArrowRight :size="20" class="group-hover:translate-x-1 transition-transform" />
           </RouterLink>
 
@@ -113,138 +111,20 @@ const contentStyle = computed(() => ({
     </div>
   </section>
 
-  <section class="py-20 px-4 bg-slate-900 border-t border-slate-800">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-12">
-        <h2 class="text-4xl font-bold mb-4">Featured Work</h2>
-        <p class="text-slate-400">
-          Showcasing some of my recent projects and achievements
-        </p>
-      </div>
-
-      <div class="grid md:grid-cols-3 gap-6">
-        <div
-          v-for="project in PORTFOLIO_DATA.portfolio.slice(0, 3)"
-          :key="project.id"
-          class="group p-6 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-cyan-500 transition-all hover:shadow-lg hover:shadow-cyan-500/20"
-        >
-          <div
-            class="w-full h-40 bg-linear-to-br from-slate-700 to-slate-800 rounded-lg mb-4 flex items-center justify-center group-hover:shadow-lg transition-shadow"
-          >
-            <Code2 :size="40" class="text-slate-500" />
-          </div>
-
-          <h3 class="font-semibold mb-2 text-lg">{{ project.title }}</h3>
-          <p class="text-slate-400 text-sm mb-4">{{ project.description }}</p>
-
-          <div class="flex flex-wrap gap-2">
-            <span
-              v-for="tag in project.tags.slice(0, 2)"
-              :key="tag"
-              class="text-xs px-2 py-1 rounded bg-slate-700 text-cyan-300"
-            >
-              {{ tag }}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div class="text-center mt-12">
-        <RouterLink
-          to="/portfolio"
-          class="inline-flex items-center gap-2 px-8 py-3 border border-slate-500 rounded-lg font-semibold hover:border-white hover:text-white transition-colors"
-        >
-          View All Projects
-          <ArrowRight :size="20" />
-        </RouterLink>
-      </div>
-    </div>
+  <section id="about">
+    <AboutSection />
   </section>
-
-  <section class="py-20 px-4 bg-slate-900 border-t border-slate-800">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-12">
-        <h2 class="text-4xl font-bold mb-4">Interactive Experience</h2>
-        <p class="text-slate-400">
-          Jelajahi portfolio dengan cara yang menyenangkan - gunakan AR dan mainkan games!
-        </p>
-      </div>
-
-      <div class="grid md:grid-cols-3 gap-6">
-        <div
-          class="group p-6 rounded-xl bg-linear-to-br from-slate-800 to-slate-900 border border-slate-700 hover:border-cyan-500 transition-all hover:shadow-lg hover:shadow-cyan-500/20"
-        >
-          <div class="w-12 h-12 rounded-lg bg-cyan-500/20 flex items-center justify-center mb-4">
-            <Eye class="w-6 h-6 text-cyan-400" />
-          </div>
-          <h3 class="font-semibold mb-2 text-lg">WebAR Viewer</h3>
-          <p class="text-slate-400 text-sm mb-4">
-            Lihat objek 3D interaktif langsung di browser tanpa aplikasi khusus
-          </p>
-          <RouterLink to="/projects" class="text-cyan-400 text-sm font-medium hover:text-cyan-300">
-            Coba Sekarang →
-          </RouterLink>
-        </div>
-
-        <div
-          class="group p-6 rounded-xl bg-linear-to-br from-slate-800 to-slate-900 border border-slate-700 hover:border-cyan-500 transition-all hover:shadow-lg hover:shadow-cyan-500/20"
-        >
-          <div class="w-12 h-12 rounded-lg bg-cyan-500/20 flex items-center justify-center mb-4">
-            <QrCode class="w-6 h-6 text-cyan-400" />
-          </div>
-          <h3 class="font-semibold mb-2 text-lg">QR Scanner</h3>
-          <p class="text-slate-400 text-sm mb-4">
-            Scan QR codes pada project cards untuk melihat detail lengkap dalam AR
-          </p>
-          <RouterLink to="/projects" class="text-cyan-400 text-sm font-medium hover:text-cyan-300">
-            Pelajari lebih lanjut →
-          </RouterLink>
-        </div>
-
-        <div
-          class="group p-6 rounded-xl bg-linear-to-br from-slate-800 to-slate-900 border border-slate-700 hover:border-cyan-500 transition-all hover:shadow-lg hover:shadow-cyan-500/20"
-        >
-          <div class="w-12 h-12 rounded-lg bg-cyan-500/20 flex items-center justify-center mb-4">
-            <Gamepad2 class="w-6 h-6 text-cyan-400" />
-          </div>
-          <h3 class="font-semibold mb-2 text-lg">Mini Games</h3>
-          <p class="text-slate-400 text-sm mb-4">
-            Mainkan 3 game seru dan kumpulkan points untuk unlock achievements!
-          </p>
-          <RouterLink to="/games" class="text-cyan-400 text-sm font-medium hover:text-cyan-300">
-            Mainkan sekarang →
-          </RouterLink>
-        </div>
-      </div>
-    </div>
+  <section id="work">
+    <WorkSection />
   </section>
-
-  <section class="py-20 px-4 bg-linear-to-b from-slate-800 to-slate-900">
-    <div class="max-w-4xl mx-auto text-center">
-      <h2 class="text-4xl font-bold mb-6">Ready to Work Together?</h2>
-      <p class="text-xl text-slate-400 mb-8">
-        Hubungi saya untuk mendiskusikan project berikutnya atau sekadar bercerita tentang teknologi favorit Anda.
-      </p>
-
-      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <RouterLink
-          to="/contact"
-          class="group inline-flex items-center gap-2 px-8 py-3 bg-linear-to-r from-cyan-500 to-blue-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all"
-        >
-          <Sparkles :size="20" />
-          Hubungi Saya
-          <ArrowRight :size="20" class="group-hover:translate-x-1 transition-transform" />
-        </RouterLink>
-
-        <RouterLink
-          to="/games"
-          class="inline-flex items-center gap-2 px-8 py-3 border border-slate-500 rounded-lg font-semibold hover:border-white hover:text-white transition-colors"
-        >
-          <Gamepad2 :size="20" />
-          Main Games
-        </RouterLink>
-      </div>
-    </div>
+  <section id="projects">
+    <ProjectSection />
+  </section>
+  <section id="contact">
+    <ContactSection />
+  </section>
+  <section id="mini-game">
+    <MiniGameSection />
   </section>
 </template>
 
