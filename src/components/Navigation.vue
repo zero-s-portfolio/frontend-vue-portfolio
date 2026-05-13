@@ -6,7 +6,6 @@ import Logo from '@/assets/images/logo.png'
 import { navMenu } from '@/constants/data'
 
 const isOpen = ref(false)
-const totalPoints = ref(0)
 
 </script>
 
