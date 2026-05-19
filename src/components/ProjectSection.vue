@@ -131,10 +131,12 @@ const projects = computed(() => {
             <!-- Content -->
             <div class="relative z-10 flex flex-1 flex-col p-4 sm:p-6">
               <!-- Category -->
-              <div
-                class="mb-4 inline-flex rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 font-semibold uppercase tracking-wider text-cyan-300 md:text-xs text-[10px]"
-              >
-                {{ project.category }}
+              <div class="flex">
+                <div
+                  class="mb-4 inline-flex rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 font-semibold uppercase tracking-wider text-cyan-300 md:text-xs text-[10px]"
+                >
+                  {{ project.category }}
+                </div>
               </div>
 
               <!-- Animated Title -->
@@ -154,7 +156,7 @@ const projects = computed(() => {
               </div>
 
               <!-- Animated Description -->
-              <div class="relative md:min-h-20 overflow-hidden">
+              <div class="relative overflow-hidden">
                 <Transition name="fade-slide" mode="out-in">
                   <p
                     :key="hoveredIndex === index ? `${project.title}-desc-hover` : `${project.title}-desc`"
