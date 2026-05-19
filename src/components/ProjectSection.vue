@@ -84,7 +84,7 @@ const projects = computed(() => {
 
           <!-- Main -->
           <div
-            class="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/70 backdrop-blur-xl transition-all duration-700 group-hover:border-cyan-400/50"
+            class="relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-slate-900/70 backdrop-blur-xl transition-all duration-700 group-hover:border-cyan-400/50"
           >
             <!-- Image -->
             <div class="relative sm:h-60 h-48 overflow-hidden">
@@ -129,7 +129,7 @@ const projects = computed(() => {
             </div>
 
             <!-- Content -->
-            <div class="relative z-10 p-4 sm:p-6">
+            <div class="relative z-10 flex flex-1 flex-col p-4 sm:p-6">
               <!-- Category -->
               <div
                 class="mb-4 inline-flex rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 font-semibold uppercase tracking-wider text-cyan-300 md:text-xs text-[10px]"
@@ -181,7 +181,7 @@ const projects = computed(() => {
               </div>
 
               <!-- Footer -->
-              <div class="mt-8 flex items-center justify-between">
+              <div class="mt-auto pt-8 flex items-center justify-between">
                 <a
                   v-if="project.url"
                   class="lg:text-base sm:text-sm text-xs lg:rounded-2xl rounded-lg bg-linear-to-r lg:px-6 px-4 lg:py-4 sm:py-3 py-2 font-semibold transition-all duration-500 hover:scale-105 hover:shadow-2xl"
