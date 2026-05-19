@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { Menu, X } from 'lucide-vue-next'
 import Logo from '@/assets/images/logo.png'
 import { navMenu } from '@/constants/data'
+import { useGetSectionbyKey } from '../services/section'
 
 const isOpen = ref(false)
+
+const { data: keyName } = useGetSectionbyKey("name");
+const nameKey = computed(() => keyName.value?.value || "Zero Sensei");
 
 </script>
 
@@ -18,7 +22,7 @@ const isOpen = ref(false)
           class="flex items-center gap-4 font-bold text-white text-lg hover:text-cyan-400 transition-colors"
         >
           <img :src="Logo" alt="logo" class="w-10">
-          <span>Zero Sensei</span>
+          <span>{{ nameKey }}</span>
         </RouterLink>
 
         <div class="hidden md:flex items-center gap-8">

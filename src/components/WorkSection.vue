@@ -1,38 +1,13 @@
 <script setup lang="ts">
-const experiences = [
-  {
-    company: 'Freelance Developer',
-    role: 'Full-Stack Developer',
-    period: '2024 - Present',
-    description:
-      'Building modern web applications with Vue, React, Laravel, and Node.js while focusing on immersive UI/UX experiences.',
-    skills: ['Vue', 'React', 'Laravel', 'TypeScript'],
-  },
-  {
-    company: 'Robotics Research',
-    role: 'AI & Robotics Engineer',
-    period: '2023 - Present',
-    description:
-      'Developing intelligent robotic systems and experimenting with emotion-aware technologies and automation.',
-    skills: ['AI', 'Python', 'Robotics', 'Automation'],
-  },
-  {
-    company: 'Tech Educator',
-    role: 'Programming Mentor',
-    period: '2022 - Present',
-    description:
-      'Teaching web development, algorithms, and modern software engineering concepts to students and communities.',
-    skills: ['Teaching', 'Web Dev', 'Mentoring'],
-  },
-  {
-    company: 'Content Creator',
-    role: 'Tech Creator',
-    period: '2021 - Present',
-    description:
-      'Creating technology-focused educational content and interactive digital experiences for the community.',
-    skills: ['Content', 'Design', 'Creative Tech'],
-  },
-]
+import { useGetSectionbyKey } from '@/services/section';
+import { useGetAllWork } from '@/services/works';
+import { computed } from 'vue';
+
+const { data: keyDescription } = useGetSectionbyKey("work-experience");
+const descriptionKey = computed(() => keyDescription.value?.value || "My journey in technology, innovation, and creative digital development.");
+
+const { data: workData } = useGetAllWork();
+const experiences = computed(() => workData.value || []);
 </script>
 
 <template>
@@ -56,7 +31,7 @@ const experiences = [
         </h2>
 
         <p class="max-w-3xl mx-auto text-base sm:text-lg lg:text-xl text-slate-300 leading-relaxed">
-          My journey in technology, innovation, and creative digital development.
+          {{ descriptionKey }}
         </p>
       </div>
 
@@ -78,7 +53,7 @@ const experiences = [
           >
             <!-- Dot -->
             <div
-              class="absolute left-4.5 sm:left-1/2 top-8 sm:top-1/2 z-20 h-5 w-5 rounded-full border-4 border-slate-950 bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.9)] sm:-translate-x-1/2 sm:-translate-y-1/2"
+              class="absolute left-2.5 sm:left-1/2 top-8 sm:top-1/2 z-20 h-5 w-5 rounded-full border-4 border-slate-950 bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.9)] sm:-translate-x-1/2 sm:-translate-y-1/2"
             />
 
             <!-- Card -->
@@ -86,7 +61,7 @@ const experiences = [
               class="ml-14 sm:ml-0 w-full sm:w-[46%] group"
             >
               <div
-                class="relative overflow-hidden rounded-3xl border border-cyan-400/20 bg-slate-900/60 backdrop-blur-xl p-6 sm:p-8 transition-all duration-500 hover:-translate-y-2 hover:border-cyan-400/60 hover:shadow-[0_0_40px_rgba(34,211,238,0.18)]"
+                class="relative overflow-hidden rounded-3xl border border-cyan-400/20 bg-slate-900/60 backdrop-blur-xl p-4 sm:p-8 transition-all duration-500 hover:-translate-y-2 hover:border-cyan-400/60 hover:shadow-[0_0_40px_rgba(34,211,238,0.18)]"
               >
                 <!-- Glow -->
                 <div
@@ -100,38 +75,36 @@ const experiences = [
                 <div class="relative z-10">
                   <!-- Top -->
                   <div
-                    class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6"
+                    class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6"
                   >
                     <div>
-                      <h3 class="text-2xl font-black text-white">
+                      <h3 class="lg:text-2xl sm:text-xl text-lg font-black text-white">
                         {{ item.role }}
                       </h3>
 
-                      <p class="text-cyan-400 font-semibold">
+                      <p class="text-cyan-400 font-semibold lg:text-base sm:text-sm text-xs">
                         {{ item.company }}
                       </p>
                     </div>
 
                     <div
-                      class="inline-flex w-fit items-center rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-sm font-semibold text-cyan-300"
+                      class="inline-flex w-fit items-center rounded-full border border-cyan-400/20 bg-cyan-400/10 sm:px-4 px-2 sm:py-2 py-1 lg:text-sm sm:text-xs text-[10px] font-semibold text-cyan-300"
                     >
                       {{ item.period }}
                     </div>
                   </div>
 
                   <!-- Desc -->
-                  <p class="text-slate-300 leading-relaxed mb-6">
-                    {{ item.description }}
-                  </p>
+                  <div class="vhtml text-slate-300 leading-relaxed mb-6 lg:text-base sm:text-sm text-xs" v-html="item.description" />
 
                   <!-- Skills -->
-                  <div class="flex flex-wrap gap-3">
+                  <div class="flex flex-wrap sm:gap-3 gap-2">
                     <div
-                      v-for="skill in item.skills"
-                      :key="skill"
-                      class="rounded-full border border-slate-700 bg-slate-800/70 px-4 py-2 text-sm font-medium text-slate-200 transition-all duration-300 hover:border-cyan-400 hover:text-cyan-300"
+                      v-for="skill in item.skill"
+                      :key="skill.id"
+                      class="rounded-full border border-slate-700 bg-slate-800/70 sm:px-4 px-2 sm:py-2 py-1 lg:text-sm sm:text-xs text-[10px] font-medium text-slate-200 transition-all duration-300 hover:border-cyan-400 hover:text-cyan-300"
                     >
-                      {{ skill }}
+                      {{ skill.skillName }}
                     </div>
                   </div>
                 </div>
