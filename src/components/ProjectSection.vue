@@ -1,64 +1,32 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-
-import ProjectImage from '@/assets/images/artificial.png'
+import { useGetSectionbyKey } from '@/services/section';
+import { computed } from 'vue';
+import { useGetAllProjects } from '@/services/projects';
 
 const hoveredIndex = ref<number | null>(null)
 
-const projects = [
-  {
-    title: 'Zero AI Platform',
-    category: 'Artificial Intelligence',
-    image: ProjectImage,
-    hoverImage: ProjectImage,
-    description:
-      'AI-powered dashboard with futuristic automation and intelligent systems.',
-    hoverDescription:
-      'Built with immersive UI motion, realtime interaction, and modern AI workflows.',
-    stack: ['Vue', 'TypeScript', 'Tailwind', 'AI'],
-    year: '2025',
-    gradient: 'from-cyan-500 via-blue-500 to-purple-500',
-  },
-  {
-    title: 'Virtual Laboratory',
-    category: '3D Education',
-    image: ProjectImage,
-    hoverImage: ProjectImage,
-    description:
-      'Interactive educational virtual laboratory experience.',
-    hoverDescription:
-      'Combining immersive learning with futuristic 3D rendering technologies.',
-    stack: ['Three.js', 'Vue', 'A-Frame'],
-    year: '2025',
-    gradient: 'from-purple-500 via-pink-500 to-rose-500',
-  },
-  {
-    title: 'Robotics Dashboard',
-    category: 'Robotics',
-    image: ProjectImage,
-    hoverImage: ProjectImage,
-    description:
-      'Realtime robotic monitoring and futuristic dashboard system.',
-    hoverDescription:
-      'Designed for intelligent robotic control with responsive realtime visualization.',
-    stack: ['Vue', 'Express', 'Socket.io'],
-    year: '2024',
-    gradient: 'from-orange-500 via-red-500 to-pink-500',
-  },
-  {
-    title: 'Portfolio Experience',
-    category: 'Creative Development',
-    image: ProjectImage,
-    hoverImage: ProjectImage,
-    description:
-      'Interactive cinematic portfolio with 3D and smooth animations.',
-    hoverDescription:
-      'Modern portfolio experience inspired by premium creative agencies.',
-    stack: ['Vue', 'Three.js', 'AOS'],
-    year: '2025',
-    gradient: 'from-emerald-500 via-cyan-500 to-blue-500',
-  },
-]
+const { data: keyDescription } = useGetSectionbyKey("project");
+const descriptionKey = computed(() => keyDescription.value?.value || "A showcase of immersive web applications, intelligent systems, and futuristic digital experiences.");
+
+const { data: dataProjects } = useGetAllProjects();
+const projects = computed(() => {
+  return (dataProjects.value || []).map(item => {
+    return {
+      title: item.title,
+      category: item.category,
+      image: item.image,
+      hoverImage: item.hoverImage || item.hoverImage,
+      description: item.description,
+      hoverDescription: item.hoverDescription || item.description,
+      stack: item.stack.map(its => its.stackName),
+      year: item.period,
+      gradient: item.gradient || 'from-cyan-500 via-blue-500 to-purple-500',
+      url: item.url,
+      codeDocumentation: item.codeDocumentation
+    }
+  })
+})
 </script>
 
 <template>
@@ -80,26 +48,25 @@ const projects = [
         <h2
           class="mb-6 text-4xl font-black tracking-tight sm:text-5xl lg:text-7xl"
         >
-          FEATURED PROJECTS
+          MY PROJECTS
         </h2>
 
         <p
           class="mx-auto max-w-3xl text-base leading-relaxed text-slate-300 sm:text-lg lg:text-xl"
         >
-          A showcase of immersive web applications, intelligent systems,
-          and futuristic digital experiences.
+          {{ descriptionKey }}
         </p>
       </div>
 
       <!-- Grid -->
       <div
-        class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-2"
+        class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3"
       >
         <div
           v-for="(project, index) in projects"
           :key="project.title"
           class="project-card group"
-          :data-aos="index % 2 === 0 ? 'fade-up-right' : 'fade-up-left'"
+          :data-aos="index % 3 === 0 ? 'fade-up-right' : 'fade-up-left'"
           :data-aos-delay="index * 150"
           @mouseenter="hoveredIndex = index"
           @mouseleave="hoveredIndex = null"
@@ -117,10 +84,10 @@ const projects = [
 
           <!-- Main -->
           <div
-            class="relative overflow-hidden rounded-4xl border border-white/10 bg-slate-900/70 backdrop-blur-xl transition-all duration-700 group-hover:border-cyan-400/50"
+            class="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/70 backdrop-blur-xl transition-all duration-700 group-hover:border-cyan-400/50"
           >
             <!-- Image -->
-            <div class="relative h-75 overflow-hidden">
+            <div class="relative sm:h-60 h-48 overflow-hidden">
               <!-- Main Image -->
               <img
                 :src="project.image"
@@ -155,17 +122,17 @@ const projects = [
 
               <!-- Floating Year -->
               <div
-                class="absolute right-5 top-5 rounded-full border border-white/10 bg-black/40 px-4 py-2 text-sm font-bold backdrop-blur-xl"
+                class="absolute lg:right-5 right-2 lg:top-5 top-2 rounded-full border border-white/10 bg-black/40 px-4 py-2 lg:text-sm text-xs font-bold backdrop-blur-xl"
               >
                 {{ project.year }}
               </div>
             </div>
 
             <!-- Content -->
-            <div class="relative z-10 p-7 sm:p-8">
+            <div class="relative z-10 p-4 sm:p-6">
               <!-- Category -->
               <div
-                class="mb-4 inline-flex rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-cyan-300"
+                class="mb-4 inline-flex rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 font-semibold uppercase tracking-wider text-cyan-300 md:text-xs text-[10px]"
               >
                 {{ project.category }}
               </div>
@@ -175,7 +142,7 @@ const projects = [
                 <Transition name="slide-up" mode="out-in">
                   <h3
                     :key="hoveredIndex === index ? `${project.title}-hover` : project.title"
-                    class="text-3xl font-black leading-tight"
+                    class="lg:text-3xl md:text-2xl text-xl font-black leading-tight"
                   >
                     {{
                       hoveredIndex === index
@@ -187,11 +154,11 @@ const projects = [
               </div>
 
               <!-- Animated Description -->
-              <div class="relative min-h-20 overflow-hidden">
+              <div class="relative md:min-h-20 overflow-hidden">
                 <Transition name="fade-slide" mode="out-in">
                   <p
                     :key="hoveredIndex === index ? `${project.title}-desc-hover` : `${project.title}-desc`"
-                    class="text-base leading-relaxed text-slate-300"
+                    class="lg:text-base md:text-sm text-xs leading-relaxed text-slate-300"
                   >
                     {{
                       hoveredIndex === index
@@ -203,11 +170,11 @@ const projects = [
               </div>
 
               <!-- Stack -->
-              <div class="mt-7 flex flex-wrap gap-3">
+              <div class="mt-7 flex flex-wrap md:gap-3 gap-1">
                 <div
                   v-for="tech in project.stack"
                   :key="tech"
-                  class="rounded-full border border-slate-700 bg-slate-800/70 px-4 py-2 text-sm font-medium text-slate-200 transition-all duration-300 hover:border-cyan-400 hover:text-cyan-300"
+                  class="md:rounded-full rounded-lg border border-slate-700 bg-slate-800/70 md:px-4 px-2 md:py-2 py-1 lg:text-sm md:text-xs text-[10px] font-medium text-slate-200 transition-all duration-300 hover:border-cyan-400 hover:text-cyan-300"
                 >
                   {{ tech }}
                 </div>
@@ -215,15 +182,23 @@ const projects = [
 
               <!-- Footer -->
               <div class="mt-8 flex items-center justify-between">
-                <button
-                  class="rounded-xl bg-linear-to-r px-6 py-3 font-semibold transition-all duration-500 hover:scale-105 hover:shadow-2xl"
+                <a
+                  v-if="project.url"
+                  class="lg:text-base sm:text-sm text-xs lg:rounded-2xl rounded-lg bg-linear-to-r lg:px-6 px-4 lg:py-4 sm:py-3 py-2 font-semibold transition-all duration-500 hover:scale-105 hover:shadow-2xl"
                   :class="project.gradient"
+                  :href="project.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   View Project
-                </button>
+                </a>
 
-                <button
-                  class="group/link flex items-center gap-2 text-sm font-semibold text-slate-400 transition-all duration-300 hover:text-cyan-300"
+                <a
+                  v-if="project.codeDocumentation"
+                  class="lg:text-sm sm:text-xs text-[10px] group/link flex items-center gap-2 font-semibold text-slate-400 transition-all duration-300 hover:text-cyan-300"
+                  :href="project.codeDocumentation"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Source Code
 
@@ -232,7 +207,7 @@ const projects = [
                   >
                     →
                   </span>
-                </button>
+                </a>
               </div>
             </div>
 
