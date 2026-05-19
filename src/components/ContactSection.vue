@@ -152,7 +152,7 @@ onMounted(() => emptyForm);
                   Email
                 </h3>
 
-                <a :href="email.url || '#'" target="__blank" class="text-slate-300 lg:text-base sm:text-sm text-xs">
+                <a :href="email.url || '#'" target="_blank" rel="noopener noreferrer" class="text-slate-300 lg:text-base sm:text-sm text-xs">
                   {{ email.value }}
                 </a>
               </div>
@@ -174,7 +174,7 @@ onMounted(() => emptyForm);
                   Phone
                 </h3>
 
-                <a :href="phone.url || '#'" target="__blank" class="text-slate-300 lg:text-base sm:text-sm text-xs">
+                <a :href="phone.url || '#'" target="_blank" rel="noopener noreferrer" class="text-slate-300 lg:text-base sm:text-sm text-xs">
                   {{ phone.value }}
                 </a>
               </div>
@@ -217,6 +217,7 @@ onMounted(() => emptyForm);
                 :key="social.id"
                 :href="social.url || '#'"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="group/social flex sm:h-14 h-12 sm:w-14 w-12 items-center justify-center sm:rounded-2xl rounded-lg border border-white/10 bg-slate-800/70 text-slate-300 transition-all duration-500 hover:scale-110 hover:border-cyan-400/40 hover:bg-slate-700"
                 :class="social.color"
               >
