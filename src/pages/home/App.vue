@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
 import { ArrowRight } from 'lucide-vue-next'
 import HeroScene from '@/components/HeroScene.vue'
 import HeroPlanet from '@/components/HeroPlanet.vue'
@@ -9,6 +8,7 @@ import ProjectSection from '@/components/ProjectSection.vue'
 import ContactSection from '@/components/ContactSection.vue'
 import MiniGameSection from '@/components/MiniGameSection.vue'
 import { onMounted, onUnmounted, ref, computed } from 'vue'
+import { useGetSectionbyKey } from '@/services/section'
 
 const scrollY = ref(0)
 
@@ -36,6 +36,16 @@ const contentStyle = computed(() => ({
   transform: `translateY(${scrollY.value * 0.0000001}px)`,
   opacity: Math.max(1 - scrollY.value / 900, 0),
 }))
+
+const { data: keyName } = useGetSectionbyKey("name");
+const nameKey = computed(() => keyName.value?.value || "Zero Sensei");
+
+const { data: keySubtitle } = useGetSectionbyKey("subtitle");
+const subtitleKey = computed(() => keySubtitle.value?.value || "Full-Stack & Robotic Developer | Tech Creator");
+
+const { data: keyDescription } = useGetSectionbyKey("description");
+const descriptionKey = computed(() => keyDescription.value?.value || "Crafting immersive digital experiences, intelligent systems, and futuristic technology that bridges creativity with innovation.");
+
 </script>
 
 <template>
@@ -71,32 +81,32 @@ const contentStyle = computed(() => ({
         <h1
           class="text-5xl sm:text-7xl font-bold mb-6 bg-linear-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent"
         >
-          Zero Sensei
+          {{ nameKey }}
         </h1>
 
         <p class="text-xl sm:text-2xl text-slate-300 mb-4">
-          Full-Stack & Robotic Developer | Tech Creator
+          {{ subtitleKey }}
         </p>
 
         <p class="text-base sm:text-lg text-slate-400 mb-8 max-w-2xl mx-auto">
-          Crafting immersive digital experiences, intelligent systems, and futuristic technology that bridges creativity with innovation.
+          {{ descriptionKey }}
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 items-center xl:justify-start justify-center">
-          <RouterLink
-            to="/portfolio"
+          <a
+            href="/#projects"
             class="group inline-flex items-center gap-2 px-8 py-3 bg-linear-to-r from-cyan-500 to-blue-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all"
           >
             Explore My World
             <ArrowRight :size="20" class="group-hover:translate-x-1 transition-transform" />
-          </RouterLink>
+          </a>
 
-          <RouterLink
-            to="/contact"
+          <a
+            href="/#contact"
             class="px-8 py-3 border border-slate-500 rounded-lg font-semibold hover:border-white hover:text-white transition-colors"
           >
             Get in Touch
-          </RouterLink>
+          </a>
         </div>
       </div>
     </div>

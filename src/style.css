@@ -138,3 +138,8 @@ html {
     scroll-behavior: smooth;
   }
 }
+
+.vhtml ul li {
+  list-style: disc;
+  margin-left: 12px;
+}

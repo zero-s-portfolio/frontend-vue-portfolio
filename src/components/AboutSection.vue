@@ -1,9 +1,33 @@
 <script setup lang="ts">
 
-import { SkillData } from '@/constants/data'
+import { useGetSectionbyKey } from '@/services/section'
+import { computed } from 'vue'
+import { useGetAllSkill } from '../services/skills'
+import AIImage from '@/assets/images/ai.png'
 
-const topItems = SkillData.slice(0, Math.ceil(SkillData.length / 2))
-const bottomItems = SkillData.slice(Math.ceil(SkillData.length / 2))
+const { data: dataSkill } = useGetAllSkill();
+
+const SkillData = computed(() => dataSkill.value ?? []);
+
+const topItems = computed(() =>
+  SkillData.value.slice(0, Math.ceil(SkillData.value.length / 2))
+);
+
+const bottomItems = computed(() =>
+  SkillData.value.slice(Math.ceil(SkillData.value.length / 2))
+);
+
+const repeatedTopItems = computed(() => [
+  ...topItems.value,
+  ...topItems.value,
+  ...topItems.value,
+]);
+
+const repeatedBottomItems = computed(() => [
+  ...bottomItems.value,
+  ...bottomItems.value,
+  ...bottomItems.value,
+]);
 
 const handleMouseMove = (event: MouseEvent) => {
   const card = event.currentTarget as HTMLElement
@@ -26,6 +50,10 @@ const handleMouseLeave = (event: MouseEvent) => {
   card.style.transform =
     'perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)'
 }
+
+const { data: keyAbout } = useGetSectionbyKey("about");
+const aboutKey = computed(() => keyAbout.value?.value || "I have an interest in mathematics education, web application development, and robotics. My dream is to create intelligent technology that understands human feelings.");
+
 </script>
 
 <template>
@@ -46,8 +74,7 @@ const handleMouseLeave = (event: MouseEvent) => {
         </h2>
 
         <p class="max-w-4xl mx-auto text-base sm:text-lg lg:text-2xl leading-relaxed text-indigo-200">
-          I have an interest in mathematics education, web application development, and robotics.
-          My dream is to create intelligent technology that understands human feelings.
+          {{ aboutKey }}
         </p>
       </div>
 
@@ -55,7 +82,7 @@ const handleMouseLeave = (event: MouseEvent) => {
         <div class="about-carousel">
           <div class="about-track scroll-left">
             <div
-              v-for="(item, index) in [...topItems, ...topItems, ...topItems]"
+              v-for="(item, index) in repeatedTopItems"
               :key="`top-${item.title}-${index}`"
               class="about-card group"
               @mousemove="handleMouseMove"
@@ -71,7 +98,7 @@ const handleMouseLeave = (event: MouseEvent) => {
                 <div
                   class="h-12 w-12 sm:h-16 sm:w-16 shrink-0 rounded-xl sm:rounded-2xl bg-black p-2 shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6"
                 >
-                  <img :src="item.image" :alt="item.title" class="h-full w-full object-contain" />
+                  <img :src="item.image || AIImage" :alt="item.title" class="h-full w-full object-contain" />
                 </div>
 
                 <h3 class="text-sm sm:text-base lg:text-lg font-black leading-snug">
@@ -85,7 +112,7 @@ const handleMouseLeave = (event: MouseEvent) => {
         <div class="about-carousel">
           <div class="about-track scroll-right">
             <div
-              v-for="(item, index) in [...bottomItems, ...bottomItems, ...bottomItems]"
+              v-for="(item, index) in repeatedBottomItems"
               :key="`bottom-${item.title}-${index}`"
               class="about-card group flex items-center"
               @mousemove="handleMouseMove"
@@ -101,7 +128,7 @@ const handleMouseLeave = (event: MouseEvent) => {
                 <div
                   class="h-12 w-12 sm:h-16 sm:w-16 shrink-0 rounded-xl sm:rounded-2xl bg-black p-2 shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6"
                 >
-                  <img :src="item.image" :alt="item.title" class="h-full w-full object-contain" />
+                  <img :src="item.image || AIImage" :alt="item.title" class="h-full w-full object-contain" />
                 </div>
 
                 <h3 class="text-sm sm:text-base lg:text-lg font-black leading-snug">
